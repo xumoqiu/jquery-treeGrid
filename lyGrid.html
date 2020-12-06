@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>蓝缘技术-lyGrid表格</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="overview &amp; stats" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="ace/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="ace/assets/css/font-awesome.css" />
+    <!-- <link rel="stylesheet" href="ace/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" /> -->
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='js/jquery/jquery-1.8.3.js'>" + "<" + "/script>");
+    </script>
+    <script src="js/iCheck/icheck.min.js"></script>
+    <script type="text/javascript" src="js/commom/CommonUtil.js"></script>
+    <script type="text/javascript" src="js/jquery/underscore.js"></script>
+    <script type="text/javascript" src="js/commom/lyGrid.min.js"></script>
+    <script type="text/javascript" src="js/commom/base64.js"></script>
+    <script type="text/javascript" src="js/commom/jquery.serializejson.min.js"></script>
+    <script type="text/javascript" src="table-data.js"></script>
+    <style type="text/css">
+        .table>thead>tr {
+            background-image: inherit;
+        }
+        
+        .dmycol-menu {
+            position: fixed;
+            background-color: white;
+            font-size: 14px;
+            text-align: left;
+            list-style: none;
+            border: 1px solid rgba(0, 0, 0, .15);
+            z-index: 1000;
+            margin-top: 11px;
+            width: 120px;
+        }
+        
+        .span_checkbox {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            background: url(images/custom.png) no-repeat;
+            border: none;
+            cursor: pointer;
+            top: -2px;
+        }
+        
+        .span_checkbox.checked {
+            background-position: -20px 0;
+        }
+        
+        .span_checkbox {
+            background-position: 0 0;
+        }
+        
+        .marR10 {
+            margin-top: 10px;
+        }
+        
+        .fa-caret-down,.fa-caret-right {
+            padding-right: 5px;
+        }
+
+
+        @keyframes LOADING {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .loading-wrap {
+            align-items: baseline;
+            display: flex;
+            justify-content: center;
+        }
+
+        .loading-wrap .loading-text {
+            font-size: 17px;
+            margin-right: 6px;
+            font-weight: 500;
+            color: #313131;
+        }
+
+
+
+        .loading-wrap .animation-wrap {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .loading-wrap .animation-wrap:before {
+            content: "";
+            animation-duration: 1.5s;
+            animation-iteration-count: infinite;
+            animation-name: LOADING;
+            background: #212529;
+            border-radius: 50%;
+            display: block;
+            height: 5px;
+            margin: 0 4px;
+            opacity: 0;
+            width: 5px;
+        }
+
+        .loading-wrap .animation-dot {
+            content: "";
+            animation-duration: 1.5s;
+            animation-iteration-count: infinite;
+            animation-name: LOADING;
+            background: #212529;
+            border-radius: 50%;
+            display: block;
+            height: 5px;
+            margin: 0 4px;
+            opacity: 0;
+            width: 5px;
+        }
+
+        .loading-wrap .animation-wrap:after {
+             animation-delay: .6s;
+        }
+
+        .loading-wrap .animation-wrap:after{
+            content: "";
+            animation-duration: 1.5s;
+            animation-iteration-count: infinite;
+            animation-name: LOADING;
+            background: #212529;
+            border-radius: 50%;
+            display: block;
+            height: 5px;
+            margin: 0 4px;
+            opacity: 0;
+            width: 5px;
+        }
+    </style>
+    <!--end tab -->
+    <script type="text/javascript">
+     
+
+        var grid = null;
+        $(function() {
+            grid = $("#paging").lyGrid({
+                l_column: [{
+                    colkey: "id",
+                    name: "id",
+                    isSort:true
+                    //hide : true
+                }, {
+                    colkey: "accountName",
+                    name: "账号",
+                    isSort:true
+                }, {
+                    colkey: "loginIP",
+                    name: "IP地址",
+                    isSort:true
+                }, {
+                    colkey: "loginTime",
+                    name: "执行时间",
+                    renderData: function(rowindex, data, rowdata, column) {
+                        return new Date(data).format("yyyy-MM-dd hh:mm:ss");
+                    }
+                }, {
+                    colkey: "description",
+                    name: "执行描述",
+                    renderData: function(rowindex, data, rowdata, column) {
+                        if (data.indexOf("成功") > -1)
+                            return data;
+                        else
+                            return "<font color='red'>执行方法异常:</font>";
+                    }
+                }, {
+                    colkey: "locked",
+                    name: "是否启用",
+                    width: '90px',
+                    renderData: function(rowindex, data, rowdata, column) {
+                        var ck = "";
+                        if (rowindex % 2) {
+                            ck = "checked='checked'";
+                        }
+                        var html = '<label class="inline">';
+                        html += '<input id="id-button-borders" ' + ck + ' type="checkbox" class="ace ace-switch ace-switch-6">';
+                        html += '<span class="lbl middle"></span></label>';
+                        return html;
+                    }
+                }, {
+                    name: "操作",
+                    renderData: function(rowindex, data, rowdata, column) {
+                        return "<font color='red'>测试渲染函数,自由操作每一列的数据显示!</div>";
+                    }
+                }],
+                checkValue: 'id', // 当checkbox为true时，需要设置存放checkbox的值字段 默认存放字段id的值
+                //jsonUrl : '../background/system/resources/findResource',//findResource
+                data: {
+                    pageSize: 10,
+                    pageIndex:  1,
+                    search: "",
+                    sidx: '',// 排序字段
+                    sord: '',// 排序 asc / desc
+                    projectName: "",
+                    projectCategory: "",
+                    projectType: "",
+                    projectStatus: "",
+                    type: ""
+
+                }, //传给后台的参数
+                setNumber: false,
+                checkbox: false,
+                pageSize: 10,
+                async:true,
+                selectPageSize: [5, 10, 20, 50],
+                goPage: true,
+                dymCol: false, //是否显示动态列
+                //jsonUrl : "sss.shtml",支持url地址
+                local: true, //是否本地分页,即返回所有数据,让前端分页
+                jsonUrl: jsondata,
+                treeGrid: {
+                    type: 1,
+                    hide: true,
+                    checkChild: true, //选中父类，自动选中子类
+                    name: "accountName",
+                    id: "id",
+                    pid: "pid"
+                }
+            });
+
+        });
+
+        function gridOptions(type) { // 绑定查询按扭	
+            //以下每一个配置都可以放到基本属性表格对象,,参考上的表格例子配置
+            switch (type) {
+                case "usePage-true":
+                    grid.setOptions({
+                        usePage: true
+                    });
+                    break;
+                case "usePage-false":
+                    grid.setOptions({
+                        usePage: false
+                    });
+                    break;
+                case "pageSize":
+                    grid.setOptions({
+                        pageSize: 20
+                    });
+                    break;
+                case "trRowClick":
+                    layer.alert("请双击某一行!");
+                    grid.setOptions({
+                        trRowClick: function(index, data, checked) {
+                            var s = "当前第 " + index + " 行 是否选中 " + checked + "<br> 当前行数据是 " + JSON.stringify(data);
+                            layer.alert(s);
+                        }
+                    });
+                    break;
+                case "loadData":
+                    grid.loadData();
+                    break;
+                case "beforeComplete":
+                    grid.setOptions({
+                        beforeComplete: function(conf) {
+                            var s = "加载之前触发,当前表格配置参数 " + JSON.stringify(conf);
+                            layer.alert(s);
+                        }
+                    });
+                    //grid.loadData();
+                    break;
+                case "afterComplete":
+                    grid.setOptions({
+                        afterComplete: function(column, resultJSONData) {
+                            var s = "加载之后触发,当前页数据是 " + JSON.stringify(resultJSONData);
+                            layer.alert(s);
+                        }
+                    });
+                    break;
+                case "getSelectedCheckbox":
+                    var s = "当前选中多选框的值 " + JSON.stringify(grid.getSelectedCheckbox());
+                    layer.alert(s);
+                    break;
+                case "selectRow":
+                    var s = "当前先中的值 " + JSON.stringify(grid.selectRow());
+                    layer.alert(s);
+                    break;
+                case "lyGridUp":
+                    //数据上移,可设置参数url  grid.lyGridUp(url ); 如果不设置,不请求后台
+                    grid.lyGridUp();
+                    break;
+                case "lyGridDown":
+                    //数据下移,可设置参数url  grid.lyGridDown(url ); 如果不设置,不请求后台
+                    grid.lyGridDown();
+                    break;
+                case "resultJSONData":
+                    var s = "当前表格所有数据 " + JSON.stringify(grid.resultJSONData());
+                    layer.alert(s);
+                    break;
+                case "getColumn":
+                    var s = "当前表格表头 " + JSON.stringify(grid.getColumn());
+                    layer.alert(s);
+                    break;
+                case "setSelectedCheckbox":
+                    layer.prompt({
+                        title: '设置选中',
+                        formType: 0
+                    }, function(text, index) {
+                        grid.setSelectedCheckbox(text);
+                        layer.close(index);
+                    });
+                    break;
+                case "setSelectedCheckboxs":
+                    var list = [1, 2, 3, 4];
+                    grid.setSelectedCheckbox(list);
+                    break;
+                case "unsetSelectedCheckbox":
+                    layer.prompt({
+                        title: '取消选中',
+                        formType: 0
+                    }, function(text, index) {
+                        grid.setSelectedCheckbox(text, false);
+                        layer.close(index);
+                    });
+                    break;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="page-content" style="padding: 30px;">
+        <div class="doc-buttons" style="margin-bottom:10px;">
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('usePage-false')">隐藏分页</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('usePage-true')">显示分页</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('pageSize')">每页显示20条</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('loadData')">刷新列表</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('trRowClick')">开启双击选中行</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('getSelectedCheckbox')">获取选中多选框的值</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('selectRow')">获取选中行整个数据</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('lyGridUp')">选中行上移</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('lyGridDown')">选中行下移</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('beforeComplete')">请求数据之前触发</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('afterComplete')">请求完成之后触发</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('resultJSONData')">当前表格所有数据</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('getColumn')"><span class="fa fa-caret-down"></span>当前表格表头</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('setSelectedCheckbox')"><span class="fa fa-caret-right"></span>默认选中值</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('setSelectedCheckboxs')"><span class="fa fa-chevron-down"></span>默认选中多个值</button>
+
+            <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('unsetSelectedCheckbox')"><span class="fa fa-chevron-right"></span>取消选中</button>
+
+        </div>
+        <div id="paging" class="pagclass"></div>
+    </div>
+
+    <div id="paging2" class="pagclass"></div>
+    </div>
+</body>
+
+</html>
