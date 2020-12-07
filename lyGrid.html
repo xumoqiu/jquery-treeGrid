@@ -22,7 +22,7 @@
     </script>
     <script src="js/iCheck/icheck.min.js"></script>
     <script type="text/javascript" src="js/commom/CommonUtil.js"></script>
-    <script type="text/javascript" src="js/jquery/underscore.js"></script>
+    <script type="text/javascript" src="js/jquery/underscore-min.js"></script>
     <script type="text/javascript" src="js/commom/lyGrid.min.js"></script>
     <script type="text/javascript" src="js/commom/base64.js"></script>
     <script type="text/javascript" src="js/commom/jquery.serializejson.min.js"></script>
@@ -81,8 +81,6 @@
                         return "<font color='red'>测试渲染函数,自由操作每一列的数据显示!</div>";
                     }
                 }],
-                checkValue: 'id', // 当checkbox为true时，需要设置存放checkbox的值字段 默认存放字段id的值
-                //jsonUrl : '../background/system/resources/findResource',//findResource
                 data: {
                     pageSize: 10,
                     pageIndex: 1,
@@ -94,23 +92,22 @@
                     projectType: "",
                     projectStatus: "",
                     type: ""
-
                 }, //传给后台的参数
-                setNumber: false,
-                checkbox: false,
+                setNumber: true,
+                checkbox: true,
+                checkValue: 'id',
+                selectPageSize: [2, 5, 10, 20, 50],
                 pageSize: 10,
-                pagecode: 6,
+                switchPageCount: 4,
                 goPage: true,
                 async: true,
-                selectPageSize: [2, 5, 10, 20, 50],
                 dymCol: true, //是否显示动态列
-                //jsonUrl : "sss.shtml",支持url地址
                 local: true, //是否本地分页,即返回所有数据,让前端分页
                 jsonUrl: jsondata,
                 treeGrid: {
                     type: 1,
                     hide: true,
-                    checkChild: true, //选中父类，自动选中子类
+                    checkChild: false, //选中父类，自动选中子类
                     name: "accountName",
                     id: "id",
                     pid: "pid"
