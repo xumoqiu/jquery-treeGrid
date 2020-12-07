@@ -27,53 +27,7 @@
     <script type="text/javascript" src="js/commom/base64.js"></script>
     <script type="text/javascript" src="js/commom/jquery.serializejson.min.js"></script>
     <script type="text/javascript" src="table-data.js"></script>
-    <style type="text/css">
-        .table>thead>tr {
-            background-image: inherit;
-        }
-        
-        .dmycol-menu {
-            position: fixed;
-            background-color: white;
-            font-size: 14px;
-            text-align: left;
-            list-style: none;
-            border: 1px solid rgba(0, 0, 0, .15);
-            z-index: 1000;
-            margin-top: 11px;
-            width: 120px;
-        }
-        
-        .span_checkbox {
-            display: inline-block;
-            vertical-align: middle;
-            margin: 0;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            background: url(images/custom.png) no-repeat;
-            border: none;
-            cursor: pointer;
-            top: -2px;
-        }
-        
-        .span_checkbox.checked {
-            background-position: -20px 0;
-        }
-        
-        .span_checkbox {
-            background-position: 0 0;
-        }
-        
-        .marR10 {
-            margin-top: 10px;
-        }
-        
-        .fa-caret-down,
-        .fa-caret-right {
-            padding-right: 5px;
-        }
-    </style>
+
     <!--end tab -->
     <script type="text/javascript">
         var grid = null;
@@ -145,10 +99,11 @@
                 setNumber: false,
                 checkbox: false,
                 pageSize: 10,
-                async: true,
-                selectPageSize: [5, 10, 20, 50],
+                pagecode: 6,
                 goPage: true,
-                dymCol: false, //是否显示动态列
+                async: true,
+                selectPageSize: [2, 5, 10, 20, 50],
+                dymCol: true, //是否显示动态列
                 //jsonUrl : "sss.shtml",支持url地址
                 local: true, //是否本地分页,即返回所有数据,让前端分页
                 jsonUrl: jsondata,
@@ -299,10 +254,7 @@
             <button type="button" id="addrole" name="addrole" class="btn btn-primary marR10" onclick="gridOptions('unsetSelectedCheckbox')"><span class="fa fa-chevron-right"></span>取消选中</button>
 
         </div>
-        <div id="paging" class="pagclass"></div>
-    </div>
-
-    <div id="paging2" class="pagclass"></div>
+        <div id="paging" class="ly-table"></div>
     </div>
 </body>
 
