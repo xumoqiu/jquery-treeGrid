@@ -11,10 +11,12 @@
     <meta name="description" content="overview &amp; stats" />
     <meta http-equiv="Access-Control-Allow-Origin" content="*" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="stylesheet" href="ace/assets/css/bootstrap.css" />
-    <link rel="stylesheet" href="ace/assets/css/font-awesome.css" />
-    <!-- <link rel="stylesheet" href="ace/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" /> -->
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/font-awesome.css" />
+
+    <link href="js/iCheck/icheck.css" rel="stylesheet">
+    <link href="css/ly-table.css" rel="stylesheet">
+
     <script type="text/javascript">
         window.jQuery || document.write("<script src='js/jquery/jquery-1.8.3.js'>" + "<" + "/script>");
     </script>
@@ -67,112 +69,29 @@
             margin-top: 10px;
         }
         
-        .fa-caret-down,.fa-caret-right {
+        .fa-caret-down,
+        .fa-caret-right {
             padding-right: 5px;
-        }
-
-
-        @keyframes LOADING {
-            0% {
-                opacity: 0;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            to {
-                opacity: 0;
-            }
-        }
-
-        .loading-wrap {
-            align-items: baseline;
-            display: flex;
-            justify-content: center;
-        }
-
-        .loading-wrap .loading-text {
-            font-size: 17px;
-            margin-right: 6px;
-            font-weight: 500;
-            color: #313131;
-        }
-
-
-
-        .loading-wrap .animation-wrap {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        .loading-wrap .animation-wrap:before {
-            content: "";
-            animation-duration: 1.5s;
-            animation-iteration-count: infinite;
-            animation-name: LOADING;
-            background: #212529;
-            border-radius: 50%;
-            display: block;
-            height: 5px;
-            margin: 0 4px;
-            opacity: 0;
-            width: 5px;
-        }
-
-        .loading-wrap .animation-dot {
-            content: "";
-            animation-duration: 1.5s;
-            animation-iteration-count: infinite;
-            animation-name: LOADING;
-            background: #212529;
-            border-radius: 50%;
-            display: block;
-            height: 5px;
-            margin: 0 4px;
-            opacity: 0;
-            width: 5px;
-        }
-
-        .loading-wrap .animation-wrap:after {
-             animation-delay: .6s;
-        }
-
-        .loading-wrap .animation-wrap:after{
-            content: "";
-            animation-duration: 1.5s;
-            animation-iteration-count: infinite;
-            animation-name: LOADING;
-            background: #212529;
-            border-radius: 50%;
-            display: block;
-            height: 5px;
-            margin: 0 4px;
-            opacity: 0;
-            width: 5px;
         }
     </style>
     <!--end tab -->
     <script type="text/javascript">
-     
-
         var grid = null;
         $(function() {
             grid = $("#paging").lyGrid({
                 l_column: [{
                     colkey: "id",
                     name: "id",
-                    isSort:true
-                    //hide : true
+                    isSort: true
+                        //hide : true
                 }, {
                     colkey: "accountName",
                     name: "账号",
-                    isSort:true
+                    isSort: true
                 }, {
                     colkey: "loginIP",
                     name: "IP地址",
-                    isSort:true
+                    isSort: true
                 }, {
                     colkey: "loginTime",
                     name: "执行时间",
@@ -212,10 +131,10 @@
                 //jsonUrl : '../background/system/resources/findResource',//findResource
                 data: {
                     pageSize: 10,
-                    pageIndex:  1,
+                    pageIndex: 1,
                     search: "",
-                    sidx: '',// 排序字段
-                    sord: '',// 排序 asc / desc
+                    sidx: '', // 排序字段
+                    sord: '', // 排序 asc / desc
                     projectName: "",
                     projectCategory: "",
                     projectType: "",
@@ -226,7 +145,7 @@
                 setNumber: false,
                 checkbox: false,
                 pageSize: 10,
-                async:true,
+                async: true,
                 selectPageSize: [5, 10, 20, 50],
                 goPage: true,
                 dymCol: false, //是否显示动态列
